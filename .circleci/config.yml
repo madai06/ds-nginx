@@ -6,15 +6,15 @@ workflows:
   build_and_push_image:
     jobs:
       - aws-ecr/build-and-push-image:
-        region: AWS_REGION
-        account-url: AWS_ECR_ACCOUNT_URL
-        repo: "ds-nginx"
-        tag: "${CIRCLE_SHA1}"
+          region: AWS_REGION
+          account-url: AWS_ECR_ACCOUNT_URL
+          repo: "ds-nginx"
+          tag: "${CIRCLE_SHA1}"
 
       - aws-ecs/deploy-service-update:
-        requires:
-          - aws-ecr/build-and-push-image
-        family: "ds-nginx-task"
-        cluster-name: "ds-nginx-cluster"
-        service-name: "ds-nginx-service"
-        container-image-name-updates: "container=ds-nginx-container,tag=${CIRCLE_SHA1}"
+          requires:
+            - aws-ecr/build-and-push-image
+          family: "ds-nginx-task"
+          cluster-name: "ds-nginx-cluster"
+          service-name: "ds-nginx-service"
+          container-image-name-updates: "container=ds-nginx-container,tag=${CIRCLE_SHA1}"
